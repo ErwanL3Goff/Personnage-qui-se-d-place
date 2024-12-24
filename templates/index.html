@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Personnage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #jeu {
+            margin: 20px auto;
+            width: 300px;
+            height: 300px;
+            border: 2px solid black;
+            position: relative;
+        }
+        #personnage {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            position: absolute;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jeu de Personnage</h1>
+    <div id="jeu">
+        <div id="personnage"></div>
+    </div>
+    <div>
+        <button onclick="deplacer('haut')">Haut</button><br>
+        <button onclick="deplacer('gauche')">Gauche</button>
+        <button onclick="deplacer('bas')">Bas</button>
+        <button onclick="deplacer('droite')">Droite</button>
+    </div>
+    <script>
+        const personnage = document.getElementById("personnage");
+
+        async function deplacer(direction) {
+            const response = await fetch("/deplacer", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ direction })
+            });
+            const position = await response.json();
+            personnage.style.left = `${position.x * 20}px`;
+            personnage.style.top = `${-position.y * 20}px`;
+        }
+    </script>
+</body>
+</html>
+
